@@ -2,19 +2,25 @@ package com.nberimen.reactjavaegitim.user;
 
 import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserDto save(UserSaveRequest userSaveRequest) {
         User user = UserMapper.INSTANCE.convertToUser(userSaveRequest);
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         user = userRepository.save(user);
         UserDto userDto = UserMapper.INSTANCE.convertToUserDto(user);
         return userDto;
@@ -30,6 +36,11 @@ public class UserService {
         User inDB = getUser(id);
         UserDto userDto = UserMapper.INSTANCE.convertToUserDto(inDB);
         return userDto;
+    }
+
+    public User findByUsername(String username) {
+        User inDB = userRepository.findByUsername(username);
+        return inDB;
     }
 
     public void delete(Long id) {
