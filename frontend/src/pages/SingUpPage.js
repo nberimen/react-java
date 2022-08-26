@@ -1,11 +1,16 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { signup } from "../api/apiCalls";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import ButtonWithProgress from "../component/ButtonWithProgress";
+import { signupHandler } from "../redux/authActions";
 
 const SingUpPage = () => {
+  const dispacth = useDispatch();
+  const navigate = useNavigate();
+
   const { handleSubmit, handleChange, errors, touched } = useFormik({
     initialValues: {
       firstName: "",
@@ -28,7 +33,8 @@ const SingUpPage = () => {
       const body = { firstName, lastName, username, password };
 
       try {
-        await signup(body);
+        await dispacth(signupHandler(body));
+        navigate("/");
       } catch (err) {}
     },
   });
