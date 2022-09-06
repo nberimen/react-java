@@ -11,7 +11,7 @@ const SingUpPage = () => {
   const dispacth = useDispatch();
   const navigate = useNavigate();
 
-  const { handleSubmit, handleChange, errors, touched } = useFormik({
+  const { handleSubmit, handleChange, errors } = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -28,16 +28,21 @@ const SingUpPage = () => {
         .oneOf([Yup.ref("password")], "Şifre aynı olmalı")
         .required("Şifre Tekrar alanı boş bırakılamaz"),
     }),
-    onSubmit: async (values) => {
-      const { firstName, lastName, username, password } = values;
-      const body = { firstName, lastName, username, password };
-
-      try {
-        await dispacth(signupHandler(body));
-        navigate("/");
-      } catch (err) {}
+    onSubmit: (values) => {
+      clickSignup(values);
     },
   });
+
+  const clickSignup = async (values) => {
+    const { firstName, lastName, username, password } = values;
+    const body = { firstName, lastName, username, password };
+
+    try {
+      await dispacth(signupHandler(body));
+      navigate("/");
+    } catch (err) {}
+  };
+
   const {
     firstName: firstNameError,
     lastName: lastNameError,
@@ -53,33 +58,33 @@ const SingUpPage = () => {
           label="First Name"
           name="firstName"
           onChange={handleChange}
-          error={touched.firstName && firstNameError}
+          error={firstNameError}
         />
         <Input
           label="Last Name"
           name="lastName"
           onChange={handleChange}
-          error={touched.lastName && lastNameError}
+          error={lastNameError}
         />
         <Input
           label="Username"
           name="username"
           onChange={handleChange}
-          error={touched.username && usernameError}
+          error={usernameError}
         />
         <Input
           label="Password"
           type="password"
           name="password"
           onChange={handleChange}
-          error={touched.password && passwordError}
+          error={passwordError}
         />
         <Input
           label="Password Repeat"
           type="password"
           name="passwordRepeat"
           onChange={handleChange}
-          error={touched.passwordRepeat && passwordRepeatError}
+          error={passwordRepeatError}
         />
 
         <div className="text-center">
