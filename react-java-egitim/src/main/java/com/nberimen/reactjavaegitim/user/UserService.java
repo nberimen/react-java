@@ -3,9 +3,12 @@ package com.nberimen.reactjavaegitim.user;
 import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -22,20 +25,17 @@ public class UserService {
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         user = userRepository.save(user);
-        UserDto userDto = UserMapper.INSTANCE.convertToUserDto(user);
-        return userDto;
+        return new UserDto(user);
     }
 
-    public List<UserDto> findAll() {
-        List<User> userList = userRepository.findAll();
-        List<UserDto> userDtoList = UserMapper.INSTANCE.convertToUserDtoList(userList);
-        return userDtoList;
+    public Page<User> getUsers(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+        return userPage;
     }
 
     public UserDto findById(Long id) {
         User inDB = getUser(id);
-        UserDto userDto = UserMapper.INSTANCE.convertToUserDto(inDB);
-        return userDto;
+        return new UserDto(inDB);
     }
 
     public User findByUsername(String username) {

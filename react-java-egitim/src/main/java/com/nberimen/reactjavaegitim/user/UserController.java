@@ -3,6 +3,8 @@ package com.nberimen.reactjavaegitim.user;
 import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity findAll() {
-        List<UserDto> userDtoList = userService.findAll();
-        return ResponseEntity.ok(userDtoList);
+    public Page<UserDto> getUsers(Pageable pageable) {
+
+        return userService.getUsers(pageable).map(UserDto::new);
     }
 
     @PostMapping()
-    public ResponseEntity save(UserSaveRequest userSaveRequest) {
+    public ResponseEntity save(@RequestBody UserSaveRequest userSaveRequest) {
         UserDto userDto = userService.save(userSaveRequest);
         return ResponseEntity.ok(userDto);
     }

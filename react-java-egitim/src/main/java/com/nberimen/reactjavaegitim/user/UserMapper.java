@@ -12,9 +12,7 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    List<UserDto> convertToUserDtoList(List<User> userList);
 
-    UserDto convertToUserDto(User user);
 
     User convertToUser(UserSaveRequest userSaveRequest);
 
