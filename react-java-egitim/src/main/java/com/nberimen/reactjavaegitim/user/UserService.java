@@ -4,13 +4,10 @@ import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +25,11 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public Page<User> getUsers(Pageable pageable) {
-        Page<User> userPage = userRepository.findAll(pageable);
-        return userPage;
+    public Page<User> getUsers(Pageable pageable, User user) {
+        if (user != null) {
+            return userRepository.findByIdNot(user.getId(), pageable);
+        }
+        return userRepository.findAll(pageable);
     }
 
     public UserDto findById(Long id) {

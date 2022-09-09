@@ -1,5 +1,6 @@
 package com.nberimen.reactjavaegitim.user;
 
+import com.nberimen.reactjavaegitim.shared.CurrentUser;
 import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public Page<UserDto> getUsers(Pageable pageable) {
+    public Page<UserDto> getUsers(Pageable pageable, @CurrentUser User user) {
 
-        return userService.getUsers(pageable).map(UserDto::new);
+        return userService.getUsers(pageable, user).map(UserDto::new);
     }
 
     @PostMapping()

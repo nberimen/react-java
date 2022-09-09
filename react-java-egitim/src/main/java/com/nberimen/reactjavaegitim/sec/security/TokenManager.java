@@ -1,11 +1,11 @@
 package com.nberimen.reactjavaegitim.sec.security;
 
+import com.nberimen.reactjavaegitim.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ public class TokenManager {
     private static final int validity = 24 * 60 * 60 * 1000;
 
     public String generateToken(Authentication authentication) {
-        JwtUserDetails jwtUserDetails = (JwtUserDetails) authentication.getPrincipal();
+        User jwtUserDetails = (User) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(jwtUserDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))

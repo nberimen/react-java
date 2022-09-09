@@ -1,6 +1,5 @@
 package com.nberimen.reactjavaegitim.sec.security;
 
-import com.nberimen.reactjavaegitim.sec.security.JwtUserDetails;
 import com.nberimen.reactjavaegitim.user.User;
 import com.nberimen.reactjavaegitim.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,6 @@ public class UserDetailsService implements org.springframework.security.core.use
         if (inDB == null) {
             throw new UsernameNotFoundException("User not found!");
         }
-        return JwtUserDetails.createAuth(inDB);
+        return inDB;
     }
 }

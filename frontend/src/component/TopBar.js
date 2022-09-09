@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutSuccess } from "../redux/authActions";
 
 const TopBar = () => {
-  const { isLoggedIn } = useSelector((store) => store);
+  const { isLoggedIn, username } = useSelector((store) => store);
   const dispatch = useDispatch();
 
   const onLogoutSuccess = () => {
@@ -13,27 +13,27 @@ const TopBar = () => {
 
   let links = (
     <ul className="navbar-nav ms-auto">
-        <li>
-            <Link className="nav-link" to="/login">
-                Login
-            </Link>
-        </li>
-        <li>
-            <Link className="nav-link" to="/signup">
-                Sign Up
-            </Link>
-        </li>
+      <li>
+        <Link className="nav-link" to="/login">
+          Login
+        </Link>
+      </li>
+      <li>
+        <Link className="nav-link" to="/signup">
+          Sign Up
+        </Link>
+      </li>
     </ul>
-);
+  );
 
-if (isLoggedIn) {
-  links = (
+  if (isLoggedIn) {
+    links = (
       <ul className="navbar-nav ms-auto">
+        <Link to={`/users/${username}`} className="nav-link">
+          <span>{username}</span>
+        </Link>
         <Link to="/" className="nav-link">
-          <span
-            onClick={onLogoutSuccess}
-            style={{ cursor: "pointer" }}
-          >
+          <span onClick={onLogoutSuccess} style={{ cursor: "pointer" }}>
             Logout
           </span>
           {
@@ -41,13 +41,13 @@ if (isLoggedIn) {
           }
         </Link>
       </ul>
-  );
-}
+    );
+  }
   return (
     <div className="shadow-sm bg-light mb-2">
       <nav className="navbar navbar-light container navbar-expand">
         <Link className="navbar-brand" to="/">
-          {/* <img src="" width="60" alt="icon.png" /> */}Home Page 
+          {/* <img src="" width="60" alt="icon.png" /> */}Home Page
         </Link>
         {links}
       </nav>
