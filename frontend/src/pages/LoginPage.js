@@ -44,7 +44,7 @@ const LoginPage = () => {
   const { username: usernameError, password: passwordError } = errors;
 
 
-  const pendingApiCall = useApiProgress('/auth/login')
+  const pendingApiCall = useApiProgress('/auth/login');
 
   const buttonEnabled = username && password;
 
