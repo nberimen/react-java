@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import { signupHandler } from "../redux/authActions";
+import { useApiProgress } from "../shared/ApiProgress";
 
 const SingUpPage = () => {
   const dispacth = useDispatch();
@@ -43,6 +44,11 @@ const SingUpPage = () => {
     } catch (err) {}
   };
 
+
+  const pendingApiCallSignup = useApiProgress('/auth/register')
+  const pendingApiCallLogin = useApiProgress('/auth/login')
+
+  const pendingApiCall = pendingApiCallLogin || pendingApiCallSignup;
   const {
     firstName: firstNameError,
     lastName: lastNameError,
@@ -50,6 +56,7 @@ const SingUpPage = () => {
     password: passwordError,
     passwordRepeat: passwordRepeatError,
   } = errors;
+
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
@@ -90,7 +97,8 @@ const SingUpPage = () => {
         <div className="text-center">
           <ButtonWithProgress
             text="Sign Up"
-            disabled={passwordRepeatError !== undefined}
+            disabled={pendingApiCall || passwordRepeatError !== undefined}
+            pendingApiCall={pendingApiCall}
           />
         </div>
       </form>
