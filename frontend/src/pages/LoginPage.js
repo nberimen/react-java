@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import { loginHandler } from "../redux/authActions";
+import { useApiProgress } from "../shared/ApiProgress";
 
 const LoginPage = () => {
   const dispacth = useDispatch();
@@ -41,6 +42,10 @@ const LoginPage = () => {
 
   const { username, password } = values;
   const { username: usernameError, password: passwordError } = errors;
+
+
+  const pendingApiCall = useApiProgress('/auth/login')
+
   const buttonEnabled = username && password;
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const LoginPage = () => {
         />
         {apiError && <div className="alert alert-danger">{apiError}</div>}
         <div className="text-center">
-          <ButtonWithProgress text="Login" disabled={!buttonEnabled} />
+          <ButtonWithProgress text="Login" disabled={!buttonEnabled || pendingApiCall} pendingApiCall={pendingApiCall} />
         </div>
       </form>
     </div>
