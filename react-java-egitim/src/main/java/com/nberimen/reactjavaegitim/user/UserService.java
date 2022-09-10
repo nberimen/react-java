@@ -1,5 +1,6 @@
 package com.nberimen.reactjavaegitim.user;
 
+import com.nberimen.reactjavaegitim.gen.error.NotFoundException;
 import com.nberimen.reactjavaegitim.user.dto.UserDto;
 import com.nberimen.reactjavaegitim.user.dto.UserSaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class UserService {
 
     public User findByUsername(String username) {
         User inDB = userRepository.findByUsername(username);
+        if (inDB == null) {
+            throw new NotFoundException();
+        }
         return inDB;
     }
 

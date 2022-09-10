@@ -31,10 +31,10 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable Long id) {
-        UserDto userDto = userService.findById(id);
-        return ResponseEntity.ok(userDto);
+    @GetMapping("/{username}")
+    public ResponseEntity findByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
